@@ -151,7 +151,7 @@ class PersistCookieJar extends DefaultCookieJar {
   Future<void> delete(Uri uri, [bool withDomainSharedCookie = false]) async {
     await _checkInitialized();
     await super.delete(uri, withDomainSharedCookie);
-    final host = uri.host;
+    final host = uri.origin;
     if (_hostSet.remove(host)) {
       await storage.write(_indexKey, json.encode(_hostSet.toList()));
     }
@@ -173,7 +173,7 @@ class PersistCookieJar extends DefaultCookieJar {
   }
 
   Future<void> _save(Uri uri, [bool withDomainSharedCookie = false]) async {
-    final host = uri.host;
+    final host = uri.origin;
     if (!_hostSet.contains(host)) {
       _hostSet.add(host);
       await storage.write(_indexKey, json.encode(_hostSet.toList()));
@@ -191,7 +191,7 @@ class PersistCookieJar extends DefaultCookieJar {
   }
 
   Future<void> _load(Uri uri) async {
-    final host = uri.host;
+    final host = uri.origin;
     if (!_hostSet.contains(host) || hostCookies[host] != null) {
       return;
     }
