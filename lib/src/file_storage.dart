@@ -49,7 +49,8 @@ class FileStorage implements Storage {
 
   @override
   Future<void> delete(String key) async {
-    final file = File('$_currentDirectory$key');
+    final k = key.replaceAll("/", "_").replaceAll(":", "_");
+    final file = File('$_currentDirectory$k');
     if (file.existsSync()) {
       await file.delete(recursive: true);
     }
@@ -66,7 +67,8 @@ class FileStorage implements Storage {
 
   @override
   Future<String?> read(String key) async {
-    final file = File('$_currentDirectory$key');
+    final k = key.replaceAll("/", "_").replaceAll(":", "_");
+    final file = File('$_currentDirectory$k');
     if (file.existsSync()) {
       if (readPreHandler != null) {
         return readPreHandler!(await file.readAsBytes());
@@ -80,7 +82,8 @@ class FileStorage implements Storage {
   @override
   Future<void> write(String key, String value) async {
     await _makeCookieDir();
-    final file = File('$_currentDirectory$key');
+    final k = key.replaceAll("/", "_").replaceAll(":", "_");
+    final file = File('$_currentDirectory$k');
     if (writePreHandler != null) {
       await file.writeAsBytes(writePreHandler!(value));
     } else {

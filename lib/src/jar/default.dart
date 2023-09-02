@@ -176,7 +176,7 @@ class DefaultCookieJar implements CookieJar {
   @override
   Future<void> delete(Uri uri, [bool withDomainSharedCookie = false]) async {
     final host = uri.origin;
-    hostCookies.remove(origin);
+    hostCookies.remove(host);
     if (withDomainSharedCookie) {
       domainCookies.removeWhere(
         (domain, v) => _isDomainMatch(uri.origin, domain),
